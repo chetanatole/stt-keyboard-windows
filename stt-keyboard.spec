@@ -2,6 +2,8 @@
 """PyInstaller spec file for STT Keyboard (Windows)."""
 
 import os
+import glob
+import shutil
 from PyInstaller.utils.hooks import collect_all, collect_data_files, collect_submodules
 
 block_cipher = None
@@ -94,9 +96,19 @@ exe = EXE(
     icon='icon.ico' if os.path.exists('icon.ico') else None,
 )
 
+# Filter out CRT DLLs from PyQt6/Qt6/bin to prevent DLL conflicts with ctranslate2.
+# Both packages bundle MSVCP140/VCRUNTIME140 DLLs, and PyInstaller's Qt runtime hook
+# adds Qt6/bin to the DLL search path first, causing ctranslate2 to segfault.
+# The CRT DLLs in the root _internal directory (or system) are sufficient.
+_qt_crt_conflicts = {'msvcp140.dll', 'msvcp140_1.dll', 'msvcp140_2.dll',
+                     'vcruntime140.dll', 'vcruntime140_1.dll'}
+filtered_binaries = [(dest, src, typ) for dest, src, typ in a.binaries
+                     if not (os.path.basename(dest).lower() in _qt_crt_conflicts
+                             and 'PyQt6' in dest)]
+
 coll = COLLECT(
     exe,
-    a.binaries,
+    filtered_binaries,
     a.zipfiles,
     a.datas,
     strip=False,

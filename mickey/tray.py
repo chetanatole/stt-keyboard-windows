@@ -52,6 +52,10 @@ class MickeyApp:
 
             self.qt_app = QApplication(sys.argv)
 
+        # Tray apps have no main window; prevent Qt from quitting when
+        # dialogs (e.g. Edit Transcription Prompt) are closed.
+        self.qt_app.setQuitOnLastWindowClosed(False)
+
         # System tray icon
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(self._make_icon("M"))
