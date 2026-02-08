@@ -77,6 +77,7 @@ def main():
         _preloaded_transcriber = Transcriber(
             model_size=config.model_size,
             compute_type=config.compute_type,
+            device=config.device,
             language=config.language,
             initial_prompt=config.initial_prompt,
         )

@@ -18,6 +18,8 @@ class Config:
     sample_rate: int = 16000
     channels: int = 1
     compute_type: str = "int8"
+    # Device for inference: "auto" (detect GPU), "cuda", or "cpu"
+    device: str = "auto"
     play_sounds: bool = True
     input_device: str | int | None = (
         None  # None=default, int=device index, str=device name
