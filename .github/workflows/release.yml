@@ -25,6 +25,11 @@ jobs:
           pip install -e ".[dev]"
           pip install pyinstaller
 
+      - name: Lint
+        run: |
+          ruff check mickey/
+          ruff format --check mickey/
+
       - name: Run tests
         run: pytest tests/ -v --tb=short
 
@@ -32,7 +37,7 @@ jobs:
         run: pyinstaller stt-keyboard.spec
 
       - name: Create zip archive
-        run: Compress-Archive -Path "dist\STT Keyboard.exe" -DestinationPath "dist\stt-keyboard-windows.zip"
+        run: Compress-Archive -Path "dist\STT Keyboard\*" -DestinationPath "dist\stt-keyboard-windows.zip"
         shell: pwsh
 
       - name: Create GitHub Release
