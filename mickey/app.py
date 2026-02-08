@@ -13,7 +13,9 @@ from .logging_config import get_logger
 
 # Set Windows AppUserModelID so Task Manager and taskbar show "STT Keyboard"
 # instead of "Python". Must be called before any Qt imports.
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("STTKeyboard.STTKeyboard.App.1")
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
+    "STTKeyboard.STTKeyboard.App.1"
+)
 
 logger = get_logger("app")
 
